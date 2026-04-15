@@ -25,7 +25,7 @@ let users = [
 
 // GET request: Retrieve all users
 router.get("/",(req,res)=>{
-  res.send(users);
+  res.send(JSON.stringify({users}, null, 4));
 });
 
 // GET by specific ID request: Retrieve a single user with email ID
@@ -37,6 +37,16 @@ router.get("/:email",(req,res)=>{
   let filtered_users = users.filter((user) => user.email === email);
   // Send the filtered_users array as the response to the client
   res.send(filtered_users);
+});
+
+// Create an endpoint for gettong all users with a particular Last Name
+router.get("/lastName/:lastName", (req, res) => {
+  // Extract the lastName parameter from the request URL
+  const lastName = req.params.lastName;
+  // Filter the users array to find users whose lastName matches the extracted lastName parameter
+  let filtered_lastname = users.filter((user) => user.lastName === lastName);
+  // Send the filtered_lastname array as the response to the client
+  res.send(filtered_lastname);
 });
 
 
@@ -100,7 +110,12 @@ router.put("/:email", (req, res) => {
 
 // DELETE request: Delete a user by email ID
 router.delete("/:email", (req, res) => {
-  
+  // Extract the email parameter from the request URL
+  const email = req.params.email;
+  // Filter the users array to exclude the user with the specified email
+  users = users.filter((user) => user.email != email);
+  // Send a success message as the reponse, indicating the user has been deleted
+  res.send(`User with the email ${email} has been deleted.`);
 });
 
 module.exports=router;

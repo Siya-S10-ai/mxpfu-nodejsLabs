@@ -8,6 +8,20 @@ const PORT = 5000;
 
 // Initialize session middleware with options
 app.use(session({ secret: "fingerpint", resave: true, saveUninitialized: true }));
+/**The code above tells yyour express app to use session middleware
+ * Secret: a random unique string key used to authenticate a session.
+ * resave: takes a boolean value. It enables the session to be 
+ * stored back to the session store, even if the session was never
+ * modified during the request.
+ * saveUninitialized: this allows any uninitialized session to be 
+ * sent to the store.
+ * When a session is created but not modified, it is referred to 
+ * as uninitialized.
+ * 
+ * The default value of both resave and saveUninitialized it true, 
+ * but the default is deprecated. So, set the appropriate value according
+ * to the use case.
+ */
 
 // Middleware for user authentication
 app.use("/user", (req, res, next) => {
