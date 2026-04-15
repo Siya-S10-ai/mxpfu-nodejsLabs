@@ -6,19 +6,19 @@ let users = [
     {
         firstName: "John",
         lastName: "wick",
-        email:"johnwick@gamil.com",
+        email:"johnwick@gmail.com",
         DOB:"22-01-1990",
     },
     {
         firstName: "John",
         lastName: "smith",
-        email:"johnsmith@gamil.com",
+        email:"johnsmith@gmail.com",
         DOB:"21-07-1983",
     },
     {
         firstName: "Joyal",
         lastName: "white",
-        email:"joyalwhite@gamil.com",
+        email:"joyalwhite@gmail.com",
         DOB:"21-03-1989",
     },
 ];
@@ -55,16 +55,52 @@ router.post("/",(req,res)=>{
 
 
 // PUT request: Update the details of a user by email ID
+/**We should first look at the user with the specified
+ * email ID and then modify it. 
+ */
 router.put("/:email", (req, res) => {
-  // Copy the code here
-  res.send("Yet to be implemented")//This line is to be replaced with actual return value
+  // Extract email parameter and find users with matching email
+  const email = req.params.email;
+  let filtered_users = users.filter((user) => user.email === email);
+
+  if (filtered_users.length > 0) {
+    // Select the first matching user and update attributes if provided
+    let filtered_user = filtered_users[0];
+
+    // Extract and update DOB if provided
+    let DOB = req.params.DOB;
+    if(DOB) {
+      filtered_users = DOB;
+    }
+     /**Include similar code here for updating other attributes as needed */
+    // Extract and update firstName if provided
+    let firstName = req.query.firstName;
+    if (firstName) {
+      filtered_user.firstName = firstName;
+    }
+
+    // Extract and update lastName if provided
+    let lastName = req.query.lastName;
+    if (lastName) {
+      filtered_user.lastName = lastName;
+    }
+
+     // Replace old user entry with updated user
+     users = users.filter((user) => user.email != email);
+     users.push(filtered_users);
+
+     // Send success message indicating the user has been updated
+     res.send(`User with the email ${email} has been updated.`);
+  } else {
+    // Send error message if no user is found
+    res.send(`No user found with the email ${email}`);
+  }
 });
 
 
 // DELETE request: Delete a user by email ID
 router.delete("/:email", (req, res) => {
-  // Copy the code here
-  res.send("Yet to be implemented")//This line is to be replaced with actual return value
+  
 });
 
 module.exports=router;
